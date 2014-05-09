@@ -124,7 +124,73 @@ TmapDemo = {
 	    }
 	);
     }
-}
+};
+
+
+
+TcloudDemo = {
+    init:function(){
+	$("#login").click(this.login);
+	$("#logout").click(this.logout);
+	$("#upload").click(this.uploadFile);
+
+	this.onStatusChange();
+    },
+    onStatusChange:function(){
+	if(PlanetX.getLoginStatus()){
+	    $("#login").hide();
+	    $("#logout").show();
+	    TcloudDemo.thumbnails();
+	}else{
+	    $("#logout").hide();
+	    $("#login").show();
+	    $("#thumbnails").empty();
+	}
+    },
+    login:function(){
+	PlanetX.login();
+    },
+    logout:function(){
+	PlanetX.logout(TcloudDemo.onStatusChange);
+    },
+    thumbnails:function(){
+	PlanetX.api("get", "https://apis.skplanetx.com/tcloud/images", "JSON", 
+	    {
+		"version" : 1,
+		"page" : 1,
+		"count" : 24
+	    },
+	    TcloudDemo.listingFiles);
+    },
+    listingFiles:function(json){
+	var images = json.meta.images.image;
+	$("#thumbnails").empty();
+
+	for(var i=0; i<images.length; i++){
+	    var img = images[i];
+	    $("#thumbnails").append(
+		$("<a>",{"href":img.downloadUrl}).append(
+		    $("<img>", { 
+			"src":img.thumbnailUrl,
+			"class":"col-md-2"
+		    })
+		)
+	    );
+	}
+    },
+    cleanUp:function(){
+	$("#thumbnails").empty();
+    },
+    uploadFile:function(){
+	PlanetX.api("get", "https://apis.skplanetx.com/tcloud/token", "JSON", 
+	    { "version" : 1, },
+	    function(json){
+		$("#uploadForm").attr("action",json.storage.token).submit();
+
+	    });
+    }
+};
+
 
 
 $(function(){
@@ -134,6 +200,6 @@ $(function(){
 
 	TmapDemo.init();
     });
-
+    TcloudDemo.init();
 
 });

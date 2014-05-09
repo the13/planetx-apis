@@ -18,7 +18,7 @@
 	<div class="row">
 	  <h3>T map API</h3>
 	  <p>
-	    현재위치에서 주변 편의점을 검색하고, 보행자 경로를 안내, 지도클릭시 주소안내
+	    현재위치(blue)에서 주변 편의점(red)을 검색하고, red marker를 click시 보행자 경로를 안내, 지도 click시 주소 안내
 	  </p>
 	  <ul>
 	    <li>주변 편의점 검색: POI 주변검색 API</li>
@@ -34,7 +34,38 @@
 	  <a id="address" class="col-md-12" data-toggle="tooltip" title="asdf"></a>
 	</div>
       </div>
-      <div class="tab-pane" id="tcloud">...</div>
+      <div class="tab-pane" id="tcloud">
+	<div class="row">
+	  <h3>T cloud API</h3>
+	  <p>
+	    T cloud에 file upload, 사진 thumbnail 목록
+	  </p>
+	  <ul>
+	    <li>Tcloud login/logout: OAuth 인증</li>
+	    <li>Tcloud upload: 업로드 토큰 조회 API</li>
+	    <li>Tcloud thumbnails: 사진 목록 조회 및 검색 API</li>
+	  </ul>
+	</div>
+	<div class="row">
+	  <div class="col-md-6">
+	    <div class="btn-group">
+	      <button id="login" type="button" class="btn btn-default">Tcloud login</button>
+	      <button id="logout" type="button" class="btn btn-default">Tcloud logout</button>
+	    </div>
+	  </div>
+	  <div class="col-md-6">
+	    <form id="uploadForm" action="" method="post" enctype="multipart/form-data" target="upload_target">
+	      <div class="btn-group">
+		<input type="file" name="upload" class="btn btn-default"/>
+		<input id="upload" type="button" class="btn btn-default" value="Upload" />
+	      </div>
+	    </form>
+	    <iframe id="upload_target" name="upload_target" style="width:0;height:0;border:0px solid #fff;" onload="TcloudDemo.thumbnails()"></iframe>
+	  </div>
+	</div>
+	<div id="thumbnails" class="row"></div>
+
+      </div>
       <div class="tab-pane" id="weather">...</div>
     </div>
 
