@@ -1,20 +1,56 @@
+<!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"></link>
 </head>
 <body>
-  <ul>
-    <li><a href="">Tmap API</a></li>
-    <li><a href="">Tcloud API</a></li>
-    <li><a href="">Weather Planet</a></li>
-  </ul>
-  <ul>
-    <li><a href="https://developers.skplanetx.com/">SKPlanet developers center</a></li>
-    <li><a href="https://developers.skplanetx.com/develop/doc/sdk/javascript-sdk/reference/">JavaScript SDK Guide</a></li>
-    <li><a href="https://github.com/skplanetx/planetx-js-sdk">JavaScript SDK download & examples</a></li>
+  <div class="container">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#home" data-toggle="tab">home</a></li>
+      <li><a href="#tmap" data-toggle="tab">Tmap</a></li>
+      <li><a href="#tcloud" data-toggle="tab">Tcloud</a></li>
+      <li><a href="#weather" data-toggle="tab">Weather</a></li>
+    </ul>
 
-  </ul>
-<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src="js/planetxsdk.js"></script>
-<script src="js/main.js"></script>
+    <div class="tab-content">
+      <div class="tab-pane active" id="home"></div>
+      <div class="tab-pane" id="tmap">
+	<div class="row">
+	  <h3>T map API</h3>
+	  <p>
+	    현재위치에서 주변 편의점을 검색하고, 보행자 경로를 안내, 지도클릭시 주소안내
+	  </p>
+	  <ul>
+	    <li>주변 편의점 검색: POI 주변검색 API</li>
+	    <li>보행자 경로안내: 보행자 길찾기 API</li>
+	    <li>주소 표시: reverse geocoding API</li>
+	  </ul>
+	  <div class="btn-group">
+	    <button id="poi" type="button" class="btn btn-default">주변 편의점 검색</button>
+	  </div>
+	</div>
+	<div class="row">
+	  <div id="map" class="col-md-12"></div>
+	  <a id="address" class="col-md-12" data-toggle="tooltip" title="asdf"></a>
+	</div>
+      </div>
+      <div class="tab-pane" id="tcloud">...</div>
+      <div class="tab-pane" id="weather">...</div>
+    </div>
+
+    <h1>References</h1>
+    <ul>
+      <li><a href="https://developers.skplanetx.com/">SKPlanet developers center</a></li>
+      <li><a href="https://developers.skplanetx.com/develop/doc/sdk/javascript-sdk/reference/">JavaScript SDK Guide</a></li>
+      <li><a href="https://github.com/skplanetx/planetx-js-sdk">JavaScript SDK download & examples</a></li>
+
+    </ul>
+  </div>
+
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script language="javascript" src="https://apis.skplanetx.com/tmap/js?version=1&format=javascript&appKey=b69433e6-a2c9-33a1-a2b9-2555fbd5fedd"></script>
+  <script src="js/planetxsdk.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
