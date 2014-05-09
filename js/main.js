@@ -193,12 +193,85 @@ TcloudDemo = {
 
 
 
+
+
+WeatherDemo = {
+    map:null,
+    // tmap initialize
+    init:function(){
+	this.pr_4326 = new Tmap.Projection("EPSG:4326");
+	this.pr_3857 = new Tmap.Projection("EPSG:3857");
+
+	// 위경도(WGS84GEO)를 googlel Mercator로
+	this.currentLonLat = (new Tmap.LonLat(currentLocation.longitude, currentLocation.latitude)).transform(this.pr_4326,this.pr_3857);
+	this.map = new Tmap.Map({div:"weatherMap", width:"100%", height:"300px"});
+	this.map.setCenter(this.currentLonLat, 12);
+
+	this.vectorLayer = new Tmap.Layer.Vector("Walking Path");
+	this.map.addLayer(this.vectorLayer);
+
+	this.markers = new Tmap.Layer.Markers("weather Markers");
+	this.map.addLayer(this.markers);
+
+	$("a[href=#weather]").on("shown.bs.tab",function(){
+	    WeatherDemo.map.updateSize();
+	});
+
+	this.pinCurrentPosition();
+	this.getWeatherInfo();
+    },
+    pinCurrentPosition:function(){
+	var size = new Tmap.Size(32,32);
+	var offset = new Tmap.Pixel(-(size.w/2), -size.h);
+	var blueIcon = new Tmap.Icon("img/blue_marker.png", size, offset);  
+	var marker = new Tmap.Marker(this.currentLonLat, blueIcon);
+	this.markers.addMarker(marker);
+    },
+    getWeatherInfo:function(){
+	PlanetX.api("get","http://apis.skplanetx.com/weather/current/minutely","JSON",
+	    {
+		"version" : 1,
+		"lat":currentLocation.latitude,
+		"lon":currentLocation.longitude
+	    },
+	    this.drawWeatherInfo);
+    },
+    drawWeatherInfo:function(json){
+	console.log(json);
+	for(var i=0; i<json.weather.minutely.length; i++){
+	    var info = json.weather.minutely[i];
+	    var lon = parseFloat(info.station.longitude);
+	    var lat = parseFloat(info.station.latitude);
+
+	    var size = new Tmap.Size(100,30);
+	    var offset = new Tmap.Pixel(-(size.w/2), -size.h);
+	    var iconHtml = new Tmap.IconHtml(
+		"<p style=\"text-align:center;font-size:.7em;background:#fff;border-radius:5px;\">"
+		    + info.station.name + ":"
+		    + info.sky.name+"<br/>"
+		    + info.temperature.tc + "/"
+		    + "M" + info.temperature.tmax + "/"
+		    + "m" + info.temperature.tmin
+		    +"</p>", size, offset);  
+
+	    var marker = new Tmap.Marker(
+		(new Tmap.LonLat(lon, lat)).transform(WeatherDemo.pr_4326, WeatherDemo.pr_3857), 
+		iconHtml );
+	    WeatherDemo.markers.addMarker(marker);
+	}
+	
+    },
+};
+
+
+
 $(function(){
     navigator.geolocation.getCurrentPosition(function(geoPosition){
 	currentLocation = geoPosition.coords;
 	console.log("current position is set");
 
 	TmapDemo.init();
+	WeatherDemo.init();
     });
     TcloudDemo.init();
 
