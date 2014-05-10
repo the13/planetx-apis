@@ -37,7 +37,6 @@ TmapDemo = {
 	var size = new Tmap.Size(32,32);
 	var offset = new Tmap.Pixel(-(size.w/2), -size.h);
 	var blueIcon = new Tmap.Icon("img/blue_marker.png", size, offset);  
-	this.redIcon = new Tmap.Icon("img/red_marker.png", size, offset);
 
 	var marker = new Tmap.Marker(this.currentLonLat, blueIcon);
 	this.markers.addMarker(marker);
@@ -59,7 +58,11 @@ TmapDemo = {
 	    var poi = json.searchPoiInfo.pois.poi[i];
 	    var lon = poi.frontLon || poi.noorLon;
 	    var lat = poi.frontLat || poi.noorLat;
-	    var marker = new Tmap.Marker( new Tmap.LonLat(lon, lat), TmapDemo.redIcon );
+	    
+	    var size = new Tmap.Size(32,32);
+	    var offset = new Tmap.Pixel(-(size.w/2), -size.h);
+	    var redIcon = new Tmap.Icon("img/red_marker.png", size, offset);
+	    var marker = new Tmap.Marker( new Tmap.LonLat(lon, lat), redIcon );
 
 	    TmapDemo.markers.addMarker(marker);
 	    marker.events.register("click",marker,TmapDemo.findWalkingPath);
